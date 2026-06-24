@@ -1,14 +1,14 @@
 {
-    "keyboard_name": "JoyBall2_v0.3",
+    "keyboard_name": "JoyBall2_v0.4",
     "manufacturer": "codeKurisu",
     "maintainer": "Christian Zamora",
     "processor": "RP2040",
     "bootloader": "rp2040",
     "url": "",
     "usb": {
-        "device_version": "0.0.3",
-        "pid": "0x5352",
-        "vid": "0x4255"
+        "device_version": "1.0.4",
+        "pid": "0x1209",
+        "vid": "0x2010"
     },
     "split": {
         "enabled": true,

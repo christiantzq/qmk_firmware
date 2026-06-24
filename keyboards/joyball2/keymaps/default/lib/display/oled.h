@@ -8,4 +8,3 @@ void oled_timerHandler(void);
 
 // API to wake up oled (from screen saver)
 void oled_wakeUpScreen(void);
-void oled_bigNumber(uint8_t value, uint8_t row);

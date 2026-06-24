@@ -13,6 +13,12 @@ uint16_t mouse_getCpi(void) {
   return mouseCpi;
 }
 
+// If this is bypassed CPI will not be updated in config settings
+void mouse_setCpi(uint16_t cpi) {
+  mouseCpi = cpi;
+  pointing_device_set_cpi(cpi);
+}
+
 // Increases current CPI by 100
 // Max for PWD3360 is 12,000 but we're capped at 3,100
 void mouse_increaseCpi(void) {

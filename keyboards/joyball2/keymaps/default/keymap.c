@@ -168,7 +168,7 @@ uint8_t mod_state; // Easy access to current active mods
 bool is_alt_tab_active = false;
 bool is_ctrl_tab_active = false;
 bool is_alt_tilde_active = false;
-bool have_config_changes = false; // Tracks changes to save EEPROM writes
+bool has_config_changes = false; // Tracks changes to save EEPROM writes
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   oled_wakeUpScreen();
@@ -212,16 +212,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // case CK_POMO: // Pomodoro Timer Key Events Handler
     //   return pomodoro_processKeyEvent(record->event.pressed);
     //   break;
-    case PLAY_Z1: // Play zelda song 1
-      if (record->event.pressed) {
-        audio_playZeldaChest();
-      }
-      break;
-    case PLAY_Z2: // Play zelda song 2
-      if (record->event.pressed) {
-        audio_playZeldaSecret();
-      }
-      break;
+    // case PLAY_Z1: // Play zelda song 1
+    //   if (record->event.pressed) {
+    //     audio_playSound(_SN_ZELDA_CHEST);
+    //   }
+    //   break;
+    // case PLAY_Z2: // Play zelda song 2
+    //   if (record->event.pressed) {
+    //     audio_playSound(_SN_ZELDA_SECRET);
+    //   }
+    //   break;
     case CK_LNUP: // Quickly move 12 lines up
       if (record->event.pressed) {
         for (int i = 0; i < 12; i++) {
@@ -265,24 +265,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case CK_CPIU: // Increase the Mouse's CPI
       if (record->event.pressed) {
         mouse_increaseCpi(); // oled_CpiValue updates oled
-        have_config_changes = true;
+        has_config_changes = true;
         return false;
       }
       break;
     case CK_CPID: // Decrease the Mouse's CPI
       if (record->event.pressed) {
         mouse_decreaseCpi(); // oled_CpiValue updates oled
-        have_config_changes = true;
+        has_config_changes = true;
         return false;
       }
       break;
     case L_CONF: // Save CONFIG to EEPROM
       if (record->event.pressed) {
-        pointing_device_get_cpi();
+
+        audio_playSound(_SN_CONFIG_ON);
+        //pointing_device_get_cpi();
       } else {
-        if (have_config_changes) { // Only writes to EEPROM on changes
-        //  eeprom_saveCpi(pointing_device_get_cpi());
-          have_config_changes = false; 
+        if (has_config_changes) { // Only writes to EEPROM on changes
+          //  eeprom_saveCpi(pointing_device_get_cpi());
+          has_config_changes = false; 
+          audio_playSound(_SN_SAVED_EEPROM);
+        } else {
+          audio_playSound(_SN_CONFIG_OFF);
         }
       }
       break;

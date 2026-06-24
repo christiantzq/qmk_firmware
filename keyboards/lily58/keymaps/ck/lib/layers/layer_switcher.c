@@ -1,8 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "layer_switcher.h"
 #include "layers.h"
-#include "./lib/rgb/under_glow.h"
-#include "./lib/audio/songs.h"
 
 /*
 Base Layer Toggle/Cycle Feature
@@ -42,8 +40,6 @@ void layerSwitcher_setBaseLayers(enum LayerName active, enum LayerName standBy) 
   } else {
     combo_enable();
   }
-  // Setup lights, sounds, etc
-  rgb_updateBaseLayerHue();
 }
 
 // Triggered when Base Layer Cycle Key has just being pressed
@@ -59,7 +55,6 @@ void finishBaseLayerCycleHandling(void) {
   if (isBaseLayerKeyTimerRunning) {
     // Layer Switch
     layerSwitcher_setBaseLayers(standByBaseLayer, activeBaseLayer);
-    audio_playSound(_SN_LAYER_SWAP);
   }
   isBaseLayerKeyTimerRunning = false;
 }
@@ -84,10 +79,8 @@ void layerSwitcher_timerHandler(void) {
       isBaseLayerKeyTimerRunning = false;
       if (activeBaseLayer == _GAMING || standByBaseLayer == _GAMING){
         layerSwitcher_setBaseLayers(_MAC_OS, _WINDOWS);
-        audio_playSound(_SN_LAYER_SWITCH);
       } else if (activeBaseLayer == _MAC_OS || standByBaseLayer == _MAC_OS) {
         layerSwitcher_setBaseLayers(_WINDOWS, _GAMING);
-        audio_playSound(_SN_LAYER_SWITCH);
       }
     }
   }

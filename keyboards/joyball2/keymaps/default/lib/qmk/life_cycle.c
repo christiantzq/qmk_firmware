@@ -24,8 +24,6 @@ void keyboard_post_init_user(void) {
   
   // Slave-side custom sync setup
   transaction_register_rpc(USER_SYNC_A, user_sync_a_slave_handler);
-
-  pointing_device_set_cpi(800);
 }
 
 // =>                               ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Matrix Scan ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
