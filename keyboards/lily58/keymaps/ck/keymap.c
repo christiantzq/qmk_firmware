@@ -37,6 +37,8 @@ enum my_keycodes {
 #define HRS_F   LSFT_T(KC_LPRN) // Symbol Homerow ( / Shift
 #define W_COPY  LCTL(KC_C)      // Copy (Windows)
 #define M_COPY  LGUI(KC_C)      // Copy (Mac)
+#define W_PASTE  LCTL(KC_V)      // Paste (Windows)
+#define M_PASTE  LGUI(KC_V)      // Paste (Mac)
 #define L4_SPC  LT(4,KC_SPC)    // onHold: NumLayer | onTap: SPACE
 
 
@@ -433,23 +435,27 @@ const uint16_t PROGMEM combo01[] = {KC_COMM, KC_DOT,  COMBO_END};  // ',' + '.' 
 const uint16_t PROGMEM combo02[] = {KC_SPC,  CK_DEL3,  COMBO_END};  // ' ' + Del = Enter
 const uint16_t PROGMEM combo03[] = {KC_Z,    KC_X,    COMBO_END};  // 'Z' + 'X' = Home
 const uint16_t PROGMEM combo04[] = {KC_DOT,  KC_SLSH, COMBO_END};  // '.' + '/' = End
-const uint16_t PROGMEM combo05[] = {KC_N,    KC_M,    COMBO_END};  // 'N' + 'M' = Home
-const uint16_t PROGMEM combo06[] = {KC_V,    KC_B,    COMBO_END};  // 'V' + 'B' = End
+const uint16_t PROGMEM combo05[] = {KC_N,    KC_M,    COMBO_END};  // 'N' + 'M' = End
+const uint16_t PROGMEM combo06[] = {KC_V,    KC_B,    COMBO_END};  // 'V' + 'B' = Home
 const uint16_t PROGMEM combo07[] = {KC_2,    KC_W,    COMBO_END};  // 2 + W = PgUp
 const uint16_t PROGMEM combo08[] = {KC_9,    KC_O,    COMBO_END};  // 9 + O = PgDn
 const uint16_t PROGMEM combo09[] = {KC_C,    HRW_D,   COMBO_END};  // D + C = Copy(Win)
 const uint16_t PROGMEM combo10[] = {KC_C,    HRM_D,   COMBO_END};  // D + C = Copy(Mac)
+const uint16_t PROGMEM combo11[] = {KC_V,    HRW_D,   COMBO_END};  // V + C = Paste(Win)
+const uint16_t PROGMEM combo12[] = {KC_V,    HRM_D,   COMBO_END};  // V + C = Paste(Mac)
 combo_t key_combos[] = {
   COMBO(combo01, KC_SCLN),       // Comma + Dot = Semicolon
   COMBO(combo02, KC_ENT),        // Space + Delete = Enter
   COMBO(combo03, CK_LNST),       // 'Z' + 'X' = Home
   COMBO(combo04, CK_LNED),       // '.' + '/' = End
-  COMBO(combo05, CK_LNST),       // 'N' + 'M' = Home
-  COMBO(combo06, CK_LNED),       // 'V' + 'B' = End
+  COMBO(combo05, CK_LNED),       // 'N' + 'M' = End
+  COMBO(combo06, CK_LNST),       // 'V' + 'B' = Home
   COMBO(combo07, KC_PGUP),       // 2 + W = PgUp
   COMBO(combo08, KC_PGDN),       // 9 + O = PgDn
   COMBO(combo09, W_COPY),        // D + C = Copy (Windows)
   COMBO(combo10, M_COPY),        // D + C = Copy (Mac OS)
+  COMBO(combo11, W_PASTE),        // V + C = Paste (Windows)
+  COMBO(combo12, M_PASTE),        // V + C = Paste (Mac)
 };
 
 // =>                              ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ OS Detection ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
@@ -510,7 +516,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (LS_isBaseLayer(_MAC_OS)) {
           tap_code16(G(KC_LEFT)); // Mac OS
-        } else {sdsdf
+        } else {
           tap_code(KC_HOME); // Windows
         }
         return false;
