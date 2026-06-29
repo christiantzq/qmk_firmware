@@ -14,7 +14,8 @@ enum my_keycodes {
   CK_LNED,             // Go to line end
   CK_LYER,             // Base Layer toggle/switcher key
   CK_ENT3,             // onHold: Layer3 | onTap: ENTER
-  CK_DEL3              // onHold: Layer3 | onTap: DEL
+  CK_DEL3,              // onHold: Layer3 | onTap: DEL
+  CK_ATB,             // Alt+Tab
 };
 
 // =>                  ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ OS Base Layers Key codes ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
@@ -37,10 +38,11 @@ enum my_keycodes {
 #define HRS_F   LSFT_T(KC_LPRN) // Symbol Homerow ( / Shift
 #define W_COPY  LCTL(KC_C)      // Copy (Windows)
 #define M_COPY  LGUI(KC_C)      // Copy (Mac)
-#define W_PASTE  LCTL(KC_V)      // Paste (Windows)
-#define M_PASTE  LGUI(KC_V)      // Paste (Mac)
+#define W_PASTE  LCTL(KC_V)     // Paste (Windows)
+#define M_PASTE  LGUI(KC_V)     // Paste (Mac)
 #define L4_SPC  LT(4,KC_SPC)    // onHold: NumLayer | onTap: SPACE
-
+#define AT_TB   LALT(KC_TAB)    // Alt+Tab
+#define SF_F10  LSFT(KC_F10)      // Shift + F10
 
 // =>                             ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Keymap Matrix ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -86,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                       KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, 
     KC_BSLS, KC_EXLM, KC_AT,   KC_HASH, KC_LBRC, KC_RBRC,                     KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, 
     KC_ESC,  KC_PERC, KC_AMPR, KC_PIPE, KC_LPRN, KC_RPRN,                     KC_VOLD, MS_BTN1, MS_BTN3, MS_BTN2, XXXXXXX, _______, 
-    _______, KC_CIRC,  KC_DLR, KC_ASTR, KC_LCBR, KC_RCBR, CK_SCS,   XXXXXXX,  KC_CAPS, KC_NUM,  KC_INS,  KC_PSCR, KC_SCRL, KC_PAUS, 
+    _______, KC_CIRC,  KC_DLR, KC_ASTR, KC_LCBR, KC_RCBR, CK_SCS,   XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, 
                                _______, _______, _______, KC_DEL,   KC_ENT,   _______ , XXXXXXX, _______
   ),
   [_NUM_FN] = LAYOUT( // 4
@@ -443,6 +445,9 @@ const uint16_t PROGMEM combo09[] = {KC_C,    HRW_D,   COMBO_END};  // D + C = Co
 const uint16_t PROGMEM combo10[] = {KC_C,    HRM_D,   COMBO_END};  // D + C = Copy(Mac)
 const uint16_t PROGMEM combo11[] = {KC_V,    HRW_D,   COMBO_END};  // V + C = Paste(Win)
 const uint16_t PROGMEM combo12[] = {KC_V,    HRM_D,   COMBO_END};  // V + C = Paste(Mac)
+const uint16_t PROGMEM combo13[] = {KC_O,    HRW_L,   COMBO_END};  // L + O = Alt+Tab
+const uint16_t PROGMEM combo14[] = {KC_9,    HRW_F,   COMBO_END};  // Shift + 9 = Shift + F10
+
 combo_t key_combos[] = {
   COMBO(combo01, KC_SCLN),       // Comma + Dot = Semicolon
   COMBO(combo02, KC_ENT),        // Space + Delete = Enter
@@ -454,8 +459,10 @@ combo_t key_combos[] = {
   COMBO(combo08, KC_PGDN),       // 9 + O = PgDn
   COMBO(combo09, W_COPY),        // D + C = Copy (Windows)
   COMBO(combo10, M_COPY),        // D + C = Copy (Mac OS)
-  COMBO(combo11, W_PASTE),        // V + C = Paste (Windows)
-  COMBO(combo12, M_PASTE),        // V + C = Paste (Mac)
+  COMBO(combo11, W_PASTE),       // V + C = Paste (Windows)
+  COMBO(combo12, M_PASTE),       // V + C = Paste (Mac)
+  COMBO(combo13, AT_TB),         // L + O = Alt+Tab
+  COMBO(combo14, SF_F10),       // Shift + 9 = Shift + F10 
 };
 
 // =>                              ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ OS Detection ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
