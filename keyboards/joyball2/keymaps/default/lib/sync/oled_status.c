@@ -25,9 +25,9 @@ void syncOledStateWithSlave(void) {
       // Use transaction_rpc_send for one-way data transfer
       if(transaction_rpc_exec(USER_SYNC_A, sizeof(m2s), &m2s, 0, NULL)) {
         last_sync = timer_read32();
-        //dprint("Master sent flag to slave.\n");
+        //dprint("Master sent flag to slave.\n"); // debug
       } else {
-        //dprint("Master failed to send flag to slave!\n");
+        //dprint("Master failed to send flag to slave!\n"); // debug
       }
     }
   }

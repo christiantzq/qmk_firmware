@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "oled.h"
-// #include "print_info.h"
 #include "icons.h"
 #include "./lib/layers/layers.h"
 #include "./lib/mouse/pointer.h"
@@ -41,6 +40,7 @@ void displayLocks(bool isMacOs) {
   oled_write(led_state.scroll_lock ? "SCR:    on" : "SCR:   off", false);
 }
 
+// =>                               ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓  OLED Loop  ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 bool oled_task_user(void) {
   oled_clear(); 
 

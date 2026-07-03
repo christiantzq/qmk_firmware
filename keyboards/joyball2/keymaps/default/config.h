@@ -8,7 +8,6 @@
 #define SPLIT_USB_DETECT
 #define SPLIT_USB_TIMEOUT 3000
 #define SPLIT_USB_TIMEOUT_POLL 10
-//#define USB_SUSPEND_WAKEUP_DELAY 5000
 #define SPLIT_WATCHDOG_ENABLE      // Reboot slave if it loses connection
 #define SPLIT_WATCHDOG_TIMEOUT 4000
 #define SELECT_SOFT_SERIAL_SPEED 0 // 0 had the best response

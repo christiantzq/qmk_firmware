@@ -8,87 +8,78 @@
 Base Layer Toggle/Cycle Feature
 
 Enables a given key to toggle between two layers on tap and switch to a 
-different set of layers when hold.
+different set of layers when hold (via selector).
 
 For example, quickly toggle between Windows-Gaming on tap
-but Switching to MacOS-Windows when hold longer than given term
- */
+but switching to a different base layer when hold+selector (round robin)
+the temp base layer is not set until committing, allowing for more 
+practical encoder selection.
 
-#define LAYER_CYCLE_TERM 500
+Toggle: Windows <-> Gaming
+Hold+Next: Temporary selects MacOs
+Commit: MacOs and Windows become the new active and standby layers
+*/
 
-bool isBaseLayerKeyTimerRunning = false;
-uint16_t baseLayerKeyTimer = 0;
 enum LayerName activeBaseLayer = _WINDOWS; // default values used
 enum LayerName standByBaseLayer = _GAMING; // for BaseLayer-Quick-Toggle
 
-
 bool LS_isBaseLayer(enum LayerName layer){
-  return (layer == activeBaseLayer ? true : false); 
+  return (layer == activeBaseLayer ? true : false);
 }
 
 enum LayerName LS_baseLayer(void){
   return activeBaseLayer;
 }
 
-// Handles sounds and colors right after switching layers 
-void layerSwitcher_setBaseLayers(enum LayerName active, enum LayerName standBy) {
-  clear_mods(); // Useful to clear
-  activeBaseLayer = active;
-  standByBaseLayer = standBy;
-  layer_move(activeBaseLayer);
-  // Disable Combos in Game Mode
-  if (activeBaseLayer == _GAMING) {
+// Disables Combo when a Game layer is selected (required for some anti-cheat games)
+void handleGamingLayer(void) {
+  if (activeBaseLayer >= FIRST_GAME_LAYER && activeBaseLayer <= LAST_GAME_LAYER) {
     combo_disable();
   } else {
     combo_enable();
   }
-  // Setup lights, sounds, etc
-  rgb_updateBaseLayerHue();
 }
 
-// Triggered when Base Layer Cycle Key has just being pressed
-// this starts the timer to know if we need to toggle between
-// the active and standBy layers or cycle to another layer
-void beginBaseLayerCycleHandling(void) {
-  baseLayerKeyTimer = timer_read();  // Saves current time for timing it latter
-  isBaseLayerKeyTimerRunning = true;
+void applyLayerChanges(void) {
+  clear_mods(); // helps clear
+  layer_move(activeBaseLayer);
+  handleGamingLayer(); // Disable Combos in Game Mode
+  rgb_updateBaseLayerHue(); // Set lighting
 }
 
-// Performs the toggle if the term for hold has not being reached.
-void finishBaseLayerCycleHandling(void) {
-  if (isBaseLayerKeyTimerRunning) {
-    // Layer Switch
-    layerSwitcher_setBaseLayers(standByBaseLayer, activeBaseLayer);
-    audio_playSound(_SN_LAYER_SWAP);
-  }
-  isBaseLayerKeyTimerRunning = false;
+// Sets Layers & apply changes
+void layerSwitcher_setBaseLayers(enum LayerName active, enum LayerName standBy) {
+  activeBaseLayer = active;
+  standByBaseLayer = standBy;
+  applyLayerChanges();
 }
 
-// Setup Keycode in process_record_user (keymap.c)
-void layerSwitcher_keyHandler(bool isKeyPressed){
-  if (isKeyPressed) {
-    clear_mods();
-    beginBaseLayerCycleHandling();
+// Swaps active and standby layers
+void layerSwitcher_quickSwap(void) {
+  layerSwitcher_setBaseLayers(standByBaseLayer, activeBaseLayer);
+  audio_playSound(_SN_LAYER_SWAP);
+}
+
+// Manual Layer Switch Forward
+void layerSwitcher_selectNext(void) {
+  // Round robin forward
+  if (activeBaseLayer == LAST_BASE_LAYER) {
+    activeBaseLayer = FIRST_BASE_LAYER;
   } else {
-    finishBaseLayerCycleHandling();
+    activeBaseLayer = activeBaseLayer + 1;
   }
+  applyLayerChanges();
+  audio_playSound(_SN_LAYER_SWITCH);
 }
 
-// After enabling it, this monitors the timer, if the Term was
-// reached, proceed to cycle to the next layers.
-// As this includes a timer check, it needs to be called 
-// from the Matrix Scan's QMK function.
-void layerSwitcher_timerHandler(void) {
-  if (isBaseLayerKeyTimerRunning) {
-    if (timer_elapsed(baseLayerKeyTimer) > LAYER_CYCLE_TERM) {
-      isBaseLayerKeyTimerRunning = false;
-      if (activeBaseLayer == _GAMING || standByBaseLayer == _GAMING){
-        layerSwitcher_setBaseLayers(_MAC_OS, _WINDOWS);
-        audio_playSound(_SN_LAYER_SWITCH);
-      } else if (activeBaseLayer == _MAC_OS || standByBaseLayer == _MAC_OS) {
-        layerSwitcher_setBaseLayers(_WINDOWS, _GAMING);
-        audio_playSound(_SN_LAYER_SWITCH);
-      }
-    }
+// Manual Layer Switch Backward
+void layerSwitcher_selectPrev(void) {
+  // Round robin backwards
+  if (activeBaseLayer == FIRST_BASE_LAYER) {
+    activeBaseLayer = LAST_BASE_LAYER;
+  } else {
+    activeBaseLayer = activeBaseLayer - 1;
   }
+  applyLayerChanges();
+  audio_playSound(_SN_LAYER_SWITCH);
 }

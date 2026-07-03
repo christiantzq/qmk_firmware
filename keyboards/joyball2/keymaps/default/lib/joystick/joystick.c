@@ -33,34 +33,41 @@ void joystick_postProcessing(void) {
   // Arrow Key Behaviour
   if (yPos < (512-JOY_THRESHOLD) && !movingUp) {
     movingUp = true;
-    register_code(KC_UP);
+    //register_code(KC_UP);
+    register_code(KC_W);
   } else if (yPos >= (512-JOY_THRESHOLD) && movingUp) {
     movingUp = false;
-    unregister_code(KC_UP);
+    //unregister_code(KC_UP);
+    unregister_code(KC_W);
   }
 
   if (yPos > (512+JOY_THRESHOLD) && !movingDown) {
     movingDown = true;
-    register_code(KC_DOWN);
+    //register_code(KC_DOWN);
+    register_code(KC_S);
   } else if (yPos <= (512+JOY_THRESHOLD) && movingDown) {
     movingDown = false;
-    unregister_code(KC_DOWN);
+    // unregister_code(KC_DOWN);
+    unregister_code(KC_S);
   }
   
   if (xPos < (512-JOY_THRESHOLD) && !movingLeft) {
     movingLeft = true;
-    register_code(KC_LEFT);
+    // register_code(KC_LEFT);
+    register_code(KC_A);
   } else if (xPos >= (512-JOY_THRESHOLD) && movingLeft) {
     movingLeft = false;
-    unregister_code(KC_LEFT);
+    // unregister_code(KC_LEFT);
+    unregister_code(KC_A);
   }
 
   if (xPos > (512+JOY_THRESHOLD) && !movingRight) {
     movingRight = true;
-    register_code(KC_RGHT);
+    // register_code(KC_RGHT);
+    register_code(KC_D);
   } else if (xPos <= (512+JOY_THRESHOLD) && movingRight) {
     movingRight = false;
-    unregister_code(KC_RGHT);
+    unregister_code(KC_D);
   }
 
 }

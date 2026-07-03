@@ -42,7 +42,7 @@ void eeprom_loadUserConfig(void){
 // Resets EEPROM
 void eeconfig_init_user(void) {  
   user_config.raw = 0; 
-  user_config.cpi_mac = 10; // CPI values are multiplied
-  user_config.cpi_win = 7;  // by 100 in code to save space
+  user_config.cpi_mac = 10; // CPI values are multiplied by
+  user_config.cpi_win = 7;  // a 100 in code to save space
   eeconfig_update_user(user_config.raw); // Write default value to EEPROM
 }

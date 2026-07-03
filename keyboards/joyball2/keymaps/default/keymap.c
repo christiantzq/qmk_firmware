@@ -2,15 +2,12 @@
 #include "./lib/layers/layers.h"
 #include "./lib/layers/layer_switcher.h"
 #include "./lib/display/oled.h"
-// #include "./lib/display/print_info.h"
 // #include "./lib/eeprom/eeprom.h"
 // #include "./lib/joystick/joystick.h"
-// #include "./lib/espeng/esp_key.h"
 #include "./lib/mouse/pointer.h"
 #include "./lib/sync/oled_status.h"
 #include "./lib/audio/songs.h"
 #include "./lib/rgb/under_glow.h"
-// #include "./lib/pomodoro/pomodoro.h"
 
 // =>                           ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Custom Keycodes ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 enum my_keycodes {
@@ -34,7 +31,6 @@ enum my_keycodes {
   CK_COPY,             // Copy (for Combo)
   PLAY_Z1,             // Play Zelda Song 1
   PLAY_Z2,             // Play Zelda Song 2
-  // CK_POMO,             // Pomodoro Key
   CK_RJOY,             // Reset Joystick Middle
   CK_USCR,             // Go to the Beginning of File
   CK_DSCR              // Go to the EOF
@@ -74,22 +70,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   HY_ESC,  HRW_A,   HRW_S,   HRW_D,   HRW_F,   KC_G,          KC_H,    HRW_J,   HRW_K,   HRW_L,   HRW_QT,  KC_BSPC,
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RS_ENT,
-  KC_LCTL, KC_LGUI, KC_LALT, MS_BTN2, MS_BTN1, NP_SPC,        NP_SPC,  MS_BTN1, MS_BTN2, CK_LYER, XXXXXXX, L_CONF,
+  KC_LCTL, KC_LGUI, KC_LALT, MS_BTN2, MS_BTN1, NP_SPC,        NP_SPC,  MS_BTN1, MS_BTN2, L_CONF,  XXXXXXX, CK_LYER,
   CK_ATIL, CK_ATAB, XXXXXXX, CK_CTAB, L_FUNC,  L_SYMB,        L_SYMB,  L_FUNC,  KC_LEFT, KC_DOWN, KC_RGHT, KC_UP
 ),
 [_MAC_OS] = LAYOUT(
   _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
   _______, KC_A,    _______, HRM_D,   _______, _______,       _______, _______, HRM_K,   _______, KC_QUOT, _______,
   _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, CK_LYER,
   _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______
 ),
-[_GAMING] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-  _______, KC_A,    KC_S,    KC_D,    KC_F,    _______,       _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______,  KC_SPC,       _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______,  NP_SPC,       _______, _______, _______, _______, _______, _______
+[_GAMING] = LAYOUT( // WASD to Joystick
+  KC_TAB,  KC_T  ,  KC_Q,    KC_LALT, KC_E,     KC_R,         _______, XXXXXXX, KC_UP,   XXXXXXX, _______, _______,
+  KC_ESC,  KC_G  ,  KC_LCTL, KC_LSFT, KC_SPC,   KC_F,         _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+  _______, KC_B  ,  KC_Z,    KC_X,    KC_C,     KC_V,         _______, XXXXXXX, KC_DOWN, XXXXXXX, _______, KC_ENT,
+  _______, _______, _______, _______, _______,  KC_1,         KC_LCTL, _______, _______, _______, _______, CK_LYER,
+  KC_UP,   KC_LEFT, KC_DOWN, KC_RGHT, KC_3,     KC_2,         _______, _______, _______, _______, _______, _______
 ),
 [_SYMBOL] = LAYOUT(
   KC_GRV,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
@@ -132,10 +128,6 @@ const uint16_t PROGMEM cb06[] = {KC_Z,    KC_X,    COMBO_END};  // Z + X
 const uint16_t PROGMEM cb07[] = {KC_DOT,  KC_SLSH, COMBO_END};  // Dot + Slash
 const uint16_t PROGMEM cb08[] = {HRW_D,   KC_C,    COMBO_END};  // D + C
 const uint16_t PROGMEM cb09[] = {HRW_F,   HRW_J,   COMBO_END};  // F + J
-// const uint16_t PROGMEM cb10[] = {KC_E,    KC_R,    COMBO_END};  // E + R
-// const uint16_t PROGMEM cb11[] = {KC_U,    KC_I,    COMBO_END};  // U + I
-// const uint16_t PROGMEM cb12[] = {KC_E,    KC_W,    COMBO_END};  // E + W
-// const uint16_t PROGMEM cb13[] = {KC_C,    KC_X,    COMBO_END};  // C + X
 
 combo_t key_combos[] = {
   COMBO(cb00, KC_ENT),   // D + F = Enter (on Tap)
@@ -148,10 +140,6 @@ combo_t key_combos[] = {
   COMBO(cb07, CK_LNED),  // '.' + '/' = End
   COMBO(cb08, CK_COPY),  // D + C = Copy
   COMBO(cb09, CW_TOGG),  // Toggle Caps Word
-  // COMBO(cb10, KC_DEL),   // Delete
-  // COMBO(cb11, KC_DEL),   // Delete
-  // COMBO(cb12, CK_USCR),  // Go to the Beginning of File
-  // COMBO(cb13, CK_DSCR),  // Go to the End of File
 };
 
 // Identify and return true if that combo should be triggered only on tap
@@ -163,12 +151,12 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
 
 // =>                          ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Process Keycodes ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 uint8_t mod_state; // Easy access to current active mods
-// bool is_ctrl_alt_arrow_active = false;
-// bool is_line_start_end_active = false;
 bool is_alt_tab_active = false;
 bool is_ctrl_tab_active = false;
 bool is_alt_tilde_active = false;
-bool has_config_changes = false; // Tracks changes to save EEPROM writes
+bool has_config_changes = false; // Tracks changes to save EEPROM writes.
+bool isLayerSwitching = false; // For layer switch/swap.
+bool isAlreadySwitched = false; // If the layer swapped manually.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   oled_wakeUpScreen();
@@ -419,9 +407,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;      
       }
       break;
-    case CK_LYER: // Tap: Toggle Layer | Hold: Switch Layer
-      layerSwitcher_keyHandler(record->event.pressed);
+    case CK_LYER: // Release only: Quick layer swap
+      if (record->event.pressed) {
+        isLayerSwitching = true;
+      } else  {
+        if (!isAlreadySwitched) {
+          layerSwitcher_quickSwap();
+        }
+        isLayerSwitching = false;
+        isAlreadySwitched = false;
+        return false;
+      }
       break;
+    case KC_UP: // Override Arrow Up when Layer is being switched
+      if (record->event.pressed && isLayerSwitching) {
+        layerSwitcher_selectPrev();
+        isAlreadySwitched = true;
+        return false;
+      }
+    break;
+    case KC_DOWN: // Override Arrow Down when Layer is being switched
+      if (record->event.pressed && isLayerSwitching) {
+        layerSwitcher_selectNext();
+        isAlreadySwitched = true;
+        return false;
+      }
+    break;
     case CK_COPY: // Copy
       if (record->event.pressed){
         if (LS_isBaseLayer(_MAC_OS)) {

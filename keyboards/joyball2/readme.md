@@ -1,14 +1,14 @@
 # [cK] JoyBall2 Split Keyboard
 
 ## Compile
-```shell
+```bash
 qmk compile -kb joyball2 -km default
 ```
 
 ## First Time Setup
 
-- From Ubuntu WSL:
-```shell
+- From Ubuntu:
+```bash
 python3 --version
 sudo apt install python3-pip
 sudo apt install python3.12-venv
@@ -21,19 +21,19 @@ pip install qmk
     - Instal BoxBuddy (flatpak)
     - Install Ubuntu 22.04
     - Run: `curl -fsSL https://install.qmk.fm | sh`
-
-```shell
+```bash
 qmk setup
 qmk new-keyboard -kb joyball2
 codium /home/chris/qmk_firmware/keyboards/joyball2
 ```
-
-- All default except:
+ - All default except:
     - Development Board: `y`, `kb2040`
+
+
 ## Features
 - Ergonomic Split Keyboard 
     - Full Duplex Serial Communication (TRRS 4 pin required)
-- Accesible/Generic ProMicro RP2040 (16Mb)
+- Cheap/Generic ProMicro RP2040 (16Mb)
 - 5x6 Matrix per side (4 + 8 + 48 Programmable Switches)
     - Per side D-pad (3D printed case, 8 buttons total)
     - Per side Dedicated Mouse Buttons (3D Printed, 4 buttons total)
@@ -49,11 +49,7 @@ codium /home/chris/qmk_firmware/keyboards/joyball2
 - Speaker (Master Left)
 - Per side Haptic Feedback
 - Tenting Kit (30 degree, 3D Printed)
-- Wrist-rest ?
 
-### Windows + R Command for Joystick Calibration
-
-        joy.cpl
 
 ### Other
 - Haptics: https://docs.qmk.fm/features/haptic_feedback

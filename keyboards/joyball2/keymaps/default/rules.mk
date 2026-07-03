@@ -1,10 +1,5 @@
 # Config for using RP2040 Serial
 SERIAL_DRIVER = vendor
-# NO_USB_STARTUP_CHECK = yes
-# WAIT_FOR_USB = yes
-
-# Link Time Optimization enabled
-# LTO_ENABLE = yes
 
 # Tries to detect OS
 OS_DETECTION_ENABLE = yes
@@ -47,9 +42,7 @@ WS2812_DRIVER = vendor
 
 # Libraries
 SRC += ./lib/display/oled.c
-# SRC += ./lib/display/print_info.c
 SRC += ./lib/joystick/joystick.c
-# SRC += ./lib/espeng/esp_key.c
 SRC += ./lib/encoder/encoder.c
 SRC += ./lib/mouse/pointer.c
 SRC += ./lib/layers/layer_switcher.c
@@ -58,5 +51,4 @@ SRC += ./lib/sync/oled_status.c
 SRC += ./lib/rgb/under_glow.c
 SRC += ./lib/qmk/life_cycle.c
 SRC += ./lib/qmk/os_detection.c
-# SRC += ./lib/pomodoro/pomodoro.c
 SRC += ./lib/audio/songs.c
