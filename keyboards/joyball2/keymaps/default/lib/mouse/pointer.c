@@ -46,3 +46,26 @@ void mouse_decreaseCpi(void) {
   // snprintf(info_output, sizeof(info_output), "CPI:   %03d", mouseCpi);
   // oled_printInfo(info_output, 7, false); 
 }
+
+// Refresh CPI when changing layers
+void mouse_refreshCpi(void) {
+  switch (LS_baseLayer()) {
+    case _LINUX: // Bazzite
+      mouse_setCpi(500);
+      break;
+    case _WINDOWS: // Windows
+      mouse_setCpi(500);
+      break;
+    case _MAC_OS: // MacOS
+      mouse_setCpi(800);
+      break;
+    case _GAME_S: // Shooter
+      mouse_setCpi(500);
+      break;
+    case _GAME_R: // RPG
+      mouse_setCpi(500);
+      break;
+    default:
+      break;
+  }
+}

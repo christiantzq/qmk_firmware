@@ -25,10 +25,6 @@ void keyboard_post_init_user(void) {
 // =>                               ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Matrix Scan ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 // Runs very early, every single tick
 void matrix_scan_user(void) {
-
-  // Base Layer Toggler
-  //layerSwitcher_timerHandler();
-
   // Joystick
   joystick_readPins();
 }
@@ -36,7 +32,7 @@ void matrix_scan_user(void) {
 // =>                         ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Housekeeping Task ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 // Runs very late, every single tick
 void housekeeping_task_user(void) {
-  // Joystick Stuff
+  // Joystick
   joystick_postProcessing();
   
   // Oled Screen Saver

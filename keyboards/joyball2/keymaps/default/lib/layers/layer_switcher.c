@@ -3,6 +3,7 @@
 #include "layers.h"
 #include "./lib/rgb/under_glow.h"
 #include "./lib/audio/songs.h"
+#include "./lib/mouse/pointer.h"
 
 /*
 Base Layer Toggle/Cycle Feature
@@ -12,16 +13,13 @@ different set of layers when hold (via selector).
 
 For example, quickly toggle between Windows-Gaming on tap
 but switching to a different base layer when hold+selector (round robin)
-the temp base layer is not set until committing, allowing for more 
-practical encoder selection.
 
 Toggle: Windows <-> Gaming
 Hold+Next: Temporary selects MacOs
-Commit: MacOs and Windows become the new active and standby layers
 */
 
-enum LayerName activeBaseLayer = _WINDOWS; // default values used
-enum LayerName standByBaseLayer = _GAMING; // for BaseLayer-Quick-Toggle
+enum LayerName activeBaseLayer; // default values used
+enum LayerName standByBaseLayer; // for BaseLayer-Quick-Toggle
 
 bool LS_isBaseLayer(enum LayerName layer){
   return (layer == activeBaseLayer ? true : false);
@@ -45,6 +43,7 @@ void applyLayerChanges(void) {
   layer_move(activeBaseLayer);
   handleGamingLayer(); // Disable Combos in Game Mode
   rgb_updateBaseLayerHue(); // Set lighting
+  mouse_refreshCpi(); // Set CPI
 }
 
 // Sets Layers & apply changes

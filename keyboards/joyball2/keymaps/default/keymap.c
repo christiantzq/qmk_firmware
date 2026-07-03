@@ -66,6 +66,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //                                  ░░ ░░ ░░      ░░            ░░      ░░ ░░ ░░
 //                                    ▒-▒-▒-▒  ▒▒ ▒▒            ▒▒ ▒▒  ▒-▒-▒-▒
 
+[_LINUX] = LAYOUT(
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
+  HY_ESC,  HRW_A,   HRW_S,   HRW_D,   HRW_F,   KC_G,          KC_H,    HRW_J,   HRW_K,   HRW_L,   HRW_QT,  KC_BSPC,
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RS_ENT,
+  KC_LCTL, KC_LGUI, KC_LALT, MS_BTN2, MS_BTN1, NP_SPC,        NP_SPC,  MS_BTN1, MS_BTN2, L_CONF,  XXXXXXX, CK_LYER,
+  CK_ATIL, CK_ATAB, XXXXXXX, CK_CTAB, L_FUNC,  L_SYMB,        L_SYMB,  L_FUNC,  KC_LEFT, KC_DOWN, KC_RGHT, KC_UP
+),
 [_WINDOWS] = LAYOUT(
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   HY_ESC,  HRW_A,   HRW_S,   HRW_D,   HRW_F,   KC_G,          KC_H,    HRW_J,   HRW_K,   HRW_L,   HRW_QT,  KC_BSPC,
@@ -80,12 +87,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, CK_LYER,
   _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______
 ),
-[_GAMING] = LAYOUT( // WASD to Joystick
+[_GAME_S] = LAYOUT( // For Shooters, maps WASD to Joystick (also shifts Qwerty one position)
   KC_TAB,  KC_T  ,  KC_Q,    KC_LALT, KC_E,     KC_R,         _______, XXXXXXX, KC_UP,   XXXXXXX, _______, _______,
   KC_ESC,  KC_G  ,  KC_LCTL, KC_LSFT, KC_SPC,   KC_F,         _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
   _______, KC_B  ,  KC_Z,    KC_X,    KC_C,     KC_V,         _______, XXXXXXX, KC_DOWN, XXXXXXX, _______, KC_ENT,
   _______, _______, _______, _______, _______,  KC_1,         KC_LCTL, _______, _______, _______, _______, CK_LYER,
   KC_UP,   KC_LEFT, KC_DOWN, KC_RGHT, KC_3,     KC_2,         _______, _______, _______, _______, _______, _______
+),
+[_GAME_R] = LAYOUT( // For RPG, maps Arrows to Joystick
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          _______, XXXXXXX, KC_UP,   XXXXXXX, _______, _______,
+  KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,          _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+  _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          _______, XXXXXXX, KC_DOWN, XXXXXXX, _______, KC_ENT,
+  _______, _______, _______, _______, _______,  KC_1,         KC_LCTL, _______, _______, _______, _______, CK_LYER,
+  _______, _______, _______, _______, KC_3,     KC_2,         _______, _______, _______, _______, _______, _______
 ),
 [_SYMBOL] = LAYOUT(
   KC_GRV,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
@@ -150,13 +164,12 @@ bool get_combo_must_tap(uint16_t combo_index, combo_t *combo) {
 }
 
 // =>                          ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Process Keycodes ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
-uint8_t mod_state; // Easy access to current active mods
 bool is_alt_tab_active = false;
 bool is_ctrl_tab_active = false;
 bool is_alt_tilde_active = false;
 bool has_config_changes = false; // Tracks changes to save EEPROM writes.
 bool isLayerSwitching = false; // For layer switch/swap.
-bool isAlreadySwitched = false; // If the layer swapped manually.
+bool isAlreadySwitched = false; // If the layer had swapped manually.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   oled_wakeUpScreen();
@@ -182,34 +195,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
       }
     break;
-    // case CK_RJOY: // Re-center Joystick
-    //   if (record->event.pressed){
-    //     //joystick_ResetMidValues();
-    //   }
-    // break;
-    // case LT(_NUMPAD,KC_SPC): // Alternative Scrolling on Hold
-    // if (record->event.pressed){
-    //     //mouse_isScrolling = true; // Enable trackball scrolling
-    //     //joystick_isHorizScroll = true; // Enable Joystick Horizontal Scrolling
-    //   }
-    //   else {
-    //     //mouse_isScrolling = false; // Disable trackball scrolling
-    //     //joystick_isHorizScroll = false; // Disable Joystick Horizontal Scrolling
-    //   }
-    //   break;
-    // case CK_POMO: // Pomodoro Timer Key Events Handler
-    //   return pomodoro_processKeyEvent(record->event.pressed);
-    //   break;
-    // case PLAY_Z1: // Play zelda song 1
-    //   if (record->event.pressed) {
-    //     audio_playSound(_SN_ZELDA_CHEST);
-    //   }
-    //   break;
-    // case PLAY_Z2: // Play zelda song 2
-    //   if (record->event.pressed) {
-    //     audio_playSound(_SN_ZELDA_SECRET);
-    //   }
-    //   break;
     case CK_LNUP: // Quickly move 12 lines up
       if (record->event.pressed) {
         for (int i = 0; i < 12; i++) {
@@ -279,25 +264,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
-    // case LGUI_T(KC_A):  // ESP / ENG character
-    // case KC_E:          // handling. Check these
-    // case KC_I:          // keys for possible
-    // case KC_O:          // spanish character
-    // case KC_U:          // insertion like
-    // case KC_N:          // ñ á é í ó ú
-    //   if (record->event.pressed) {
-    //     if (LS_baseLayer() != _MAC_OS) { // Windows only
-    //       //return espKey_handlePossibleEspChar(keycode);
-    //     }
-    //   }
-    //   break;
-    // case CK_ESP: // Toggle ESP/ENG Lang Layout (Windows only)
-    //   if (record->event.pressed){
-    //     if (LS_baseLayer() != _MAC_OS) {
-    //       //return espKey_toggle();
-    //     }
-    //   }
-    //   break;
     case CK_LNST: // Go to Line Start
       if (record->event.pressed) {
         if (LS_isBaseLayer(_MAC_OS)) {

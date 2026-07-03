@@ -22,16 +22,18 @@ enum LayerName {
     _LINUX    = 0,
     _WINDOWS  = 1,
     _MAC_OS   = 2,
-    _GAMING   = 3,
-    _SYMBOL   = 4,
-    _NUMPAD   = 5,
-    _FUNCTION = 6,
-    _CONFIG   = 7
+    _GAME_S   = 3,
+    _GAME_R   = 4,
+    _SYMBOL   = 5,
+    _NUMPAD   = 6,
+    _FUNCTION = 7,
+    _CONFIG   = 8
 };
 
 // Define below indexes accordingly (inclusive)
 #define FIRST_BASE_LAYER 0
-#define LAST_BASE_LAYER 2
+#define LAST_BASE_LAYER 4
 
-#define FIRST_GAME_LAYER 2
-#define LAST_GAME_LAYER 2
+// These will get their Combo disabled when active (inclusive)
+#define FIRST_GAME_LAYER 3
+#define LAST_GAME_LAYER 4

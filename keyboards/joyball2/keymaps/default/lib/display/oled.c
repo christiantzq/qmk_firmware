@@ -50,9 +50,14 @@ bool oled_task_user(void) {
   // Main display loop
   oled_set_cursor(0,0);
   switch (get_highest_layer(layer_state)) {
-    case _WINDOWS: // or Linux
-      oled_write_P(windows_icon, false);
+    case _LINUX:
+      oled_write_P(linux_icon, false);
       oled_write(" BZT ", false);
+      displayLocks(false);
+      break;
+    case _WINDOWS:
+      oled_write_P(windows_icon, false);
+      oled_write(" WIN ", false);
       displayLocks(false);
       break;
     case _MAC_OS:
@@ -60,9 +65,14 @@ bool oled_task_user(void) {
       oled_write("MacOS", false);
       displayLocks(true);
       break;
-    case _GAMING:
+    case _GAME_S:
       oled_write_P(game_icon, false);
-      oled_write("GAMES", false);
+      oled_write("WASD ", false);
+      displayLocks(false);
+      break;
+    case _GAME_R:
+      oled_write_P(game_icon, false);
+      oled_write(" RPG ", false);
       displayLocks(false);
       break;
     case _SYMBOL:

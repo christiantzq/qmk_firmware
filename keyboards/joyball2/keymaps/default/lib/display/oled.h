@@ -1,6 +1,6 @@
 #pragma once
 
-// Used by Sync (slave comms)
+// ⚠️ Used by Sync slave comms
 bool oled_isActive;
 
 // Setup this in matrix_scan_user (qmk/life_cycle.c)

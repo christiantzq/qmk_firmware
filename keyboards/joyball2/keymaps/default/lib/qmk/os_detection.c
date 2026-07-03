@@ -4,9 +4,6 @@
 #include "./lib/layers/layers.h"
 #include "./lib/mouse/pointer.h"
 
-// #include "./lib/eeprom/eeprom.h"
-// #include "./lib/joystick/joystick.h"
-
 bool OsAlreadyDetected = false;
 
 bool process_detected_host_os_kb(os_variant_t detected_os) {
@@ -17,14 +14,18 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
     return false;
 
   switch (detected_os) {
+    case OS_LINUX: // Bazzite
+      layerSwitcher_setBaseLayers(_LINUX, _GAME_S);
+      break;
+    case OS_WINDOWS: // Windows
+      layerSwitcher_setBaseLayers(_WINDOWS, _GAME_S);
+      break;
     case OS_MACOS:
     case OS_IOS: // Mac OS
-      layerSwitcher_setBaseLayers(_MAC_OS, _WINDOWS);
-      mouse_setCpi(800);
+      layerSwitcher_setBaseLayers(_MAC_OS, _GAME_S);
       break;
-      default: // Windows
-      layerSwitcher_setBaseLayers(_WINDOWS, _GAMING);
-      mouse_setCpi(500);
+    case OS_UNSURE:
+      layerSwitcher_setBaseLayers(_LINUX, _GAME_S);
   }
   OsAlreadyDetected = true;
   return true;
