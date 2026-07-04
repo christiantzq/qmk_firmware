@@ -3,7 +3,7 @@
 #include "./lib/layers/layer_switcher.h"
 #include "./lib/display/oled.h"
 // #include "./lib/eeprom/eeprom.h"
-// #include "./lib/joystick/joystick.h"
+#include "./lib/joystick/joystick.h"
 #include "./lib/mouse/pointer.h"
 #include "./lib/sync/oled_status.h"
 #include "./lib/audio/songs.h"
@@ -123,8 +123,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, _______, _______, _______, _______
 ),
 [_CONFIG] = LAYOUT(
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PLAY_Z1,       CK_JOYM, CK_CPIU, CK_CPID, XXXXXXX, XXXXXXX, XXXXXXX,
-  EE_CLR , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PLAY_Z2,       HF_TOGG, HF_FDBK, HF_RST,  HF_NEXT, HF_PREV, HF_RST,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       CK_JOYM, CK_CPIU, CK_CPID, XXXXXXX, XXXXXXX, XXXXXXX,
+  EE_CLR , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       HF_TOGG, HF_FDBK, HF_RST,  HF_NEXT, HF_PREV, HF_RST,
   KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -369,7 +369,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case CK_JOYM: // Cycle through Joystick Mode (round robin)
       if (record->event.pressed) {
-        //joystick_CycleMode();
+        joystick_cycleMode();
         return false;      
       }
       break;

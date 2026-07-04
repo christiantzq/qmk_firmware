@@ -3,6 +3,7 @@
 #include "icons.h"
 #include "./lib/layers/layers.h"
 #include "./lib/mouse/pointer.h"
+#include "./lib/joystick/joystick.h"
 
 #define SCREEN_SAVER_TIMER 10000 // In milliseconds
 
@@ -67,7 +68,8 @@ bool oled_task_user(void) {
       break;
     case _GAME_S:
       oled_write_P(game_icon, false);
-      oled_write("WASD ", false);
+      oled_write("  W  ", false);
+      oled_write("A S D", false);
       displayLocks(false);
       break;
     case _GAME_R:
@@ -93,6 +95,18 @@ bool oled_task_user(void) {
       if (is_keyboard_master()) {
         oled_write("     CPI: ", false);
         oled_write(get_u16_str(mouse_getCpi(), ' '), false);
+        oled_write("     Joy: ", false);
+        switch (joystick_getMode()) {
+          case _JOY_WASD:
+            oled_write("WASD ", false);
+            break;
+          case _JOY_ARROWS:
+            oled_write("Arrow", false);
+            break;
+          case _JOY_PURE:
+            oled_write("Pure ", false);
+            break;
+        }
       }
   }
 

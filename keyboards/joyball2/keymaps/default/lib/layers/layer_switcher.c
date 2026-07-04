@@ -82,3 +82,4 @@ void layerSwitcher_selectPrev(void) {
   applyLayerChanges();
   audio_playSound(_SN_LAYER_SWITCH);
 }
+
