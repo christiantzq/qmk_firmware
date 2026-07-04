@@ -48,7 +48,6 @@ SRC += ./lib/mouse/pointer.c
 SRC += ./lib/layers/layer_switcher.c
 # SRC += ./lib/eeprom/eeprom.c
 SRC += ./lib/sync/oled_status.c
-SRC += ./lib/rgb/under_glow.c
 SRC += ./lib/qmk/life_cycle.c
 SRC += ./lib/qmk/os_detection.c
 SRC += ./lib/audio/songs.c

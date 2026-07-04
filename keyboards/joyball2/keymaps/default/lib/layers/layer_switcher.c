@@ -1,9 +1,9 @@
 #include QMK_KEYBOARD_H
 #include "layer_switcher.h"
 #include "layers.h"
-#include "./lib/rgb/under_glow.h"
 #include "./lib/audio/songs.h"
 #include "./lib/mouse/pointer.h"
+#include "./lib/joystick/joystick.h"
 
 /*
 Base Layer Toggle/Cycle Feature
@@ -21,6 +21,49 @@ Hold+Next: Temporary selects MacOs
 enum LayerName activeBaseLayer; // default values used
 enum LayerName standByBaseLayer; // for BaseLayer-Quick-Toggle
 
+// =>                     ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓  Layer Customization  ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
+void layerCustomization(void) {
+  // RGB
+  // HSV (Hue, Saturation and Value)
+  // https://docs.qmk.fm/features/rgblight
+  rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING);
+
+  switch (activeBaseLayer) {
+    case _LINUX:
+      combo_enable();
+      rgblight_sethsv_noeeprom(180, 255, 150); // Violet
+      mouse_setCpi(500);
+      joystick_setMode(_JOY_ARROWS);
+      break;
+    case _WINDOWS:
+      combo_enable();
+      rgblight_sethsv_noeeprom(140, 255, 150); // Azure
+      mouse_setCpi(500);
+      joystick_setMode(_JOY_ARROWS);
+      break;
+    case _MAC_OS:
+      combo_enable();
+      rgblight_sethsv_noeeprom(0, 0, 150); // White
+      mouse_setCpi(800);
+      joystick_setMode(_JOY_ARROWS);
+      break;
+    case _GAME_S:
+      combo_disable();
+      rgblight_sethsv_noeeprom(11, 255, 150); // Red-Orange
+      mouse_setCpi(500);
+      joystick_setMode(_JOY_WASD);
+      break;
+    case _GAME_R:
+      combo_disable();
+      rgblight_sethsv_noeeprom(21, 255, 150); // Orange
+      mouse_setCpi(500);
+      joystick_setMode(_JOY_ARROWS);
+      break;
+    default: 
+      // NA
+  }
+}
+
 bool LS_isBaseLayer(enum LayerName layer){
   return (layer == activeBaseLayer ? true : false);
 }
@@ -29,21 +72,10 @@ enum LayerName LS_baseLayer(void){
   return activeBaseLayer;
 }
 
-// Disables Combo when a Game layer is selected (required for some anti-cheat games)
-void handleGamingLayer(void) {
-  if (activeBaseLayer >= FIRST_GAME_LAYER && activeBaseLayer <= LAST_GAME_LAYER) {
-    combo_disable();
-  } else {
-    combo_enable();
-  }
-}
-
 void applyLayerChanges(void) {
   clear_mods(); // helps clear
   layer_move(activeBaseLayer);
-  handleGamingLayer(); // Disable Combos in Game Mode
-  rgb_updateBaseLayerHue(); // Set lighting
-  mouse_refreshCpi(); // Set CPI
+  layerCustomization();
 }
 
 // Sets Layers & apply changes

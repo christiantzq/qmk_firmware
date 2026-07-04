@@ -6,14 +6,12 @@
 #include "./lib/joystick/joystick.h"
 #include "./lib/encoder/encoder.h"
 #include "./lib/sync/oled_status.h"
-#include "./lib/rgb/under_glow.h"
 
 // =>                             ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Keyboard Init ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 // Runs once at boot-up
 void keyboard_post_init_user(void) {
   // Under-light RGB Setup
   rgblight_enable_noeeprom(); 
-  rgb_updateBaseLayerHue();
 
   // Read the user config from EEPROM
   // eeprom_loadUserConfig(); 

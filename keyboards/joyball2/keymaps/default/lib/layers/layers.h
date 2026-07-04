@@ -33,7 +33,3 @@ enum LayerName {
 // Define below indexes accordingly (inclusive)
 #define FIRST_BASE_LAYER 0
 #define LAST_BASE_LAYER 4
-
-// These will get their Combo disabled when active (inclusive)
-#define FIRST_GAME_LAYER 3
-#define LAST_GAME_LAYER 4
