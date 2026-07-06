@@ -86,9 +86,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   
   [_SYMBOL] = LAYOUT( // 3
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                       KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, 
-    KC_BSLS, KC_EXLM, KC_AT,   KC_HASH, KC_LBRC, KC_RBRC,                     KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, 
-    KC_ESC,  KC_PERC, KC_AMPR, KC_PIPE, KC_LPRN, KC_RPRN,                     KC_VOLD, MS_BTN1, MS_BTN3, MS_BTN2, XXXXXXX, _______, 
-    _______, KC_CIRC,  KC_DLR, KC_ASTR, KC_LCBR, KC_RCBR, CK_SCS,   XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, 
+    KC_BSLS, KC_EXLM, KC_AT,   KC_HASH, KC_LBRC, KC_RBRC,                     KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, MS_WHLU, KC_ESC, 
+    KC_ESC,  KC_PERC, KC_AMPR, KC_PIPE, KC_LPRN, KC_RPRN,                     KC_VOLD, MS_BTN1, MS_BTN3, MS_BTN2, MS_WHLD, _______, 
+    _______, KC_CIRC,  KC_DLR, KC_ASTR, KC_LCBR, KC_RCBR, CK_SCS,   XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, 
                                _______, _______, _______, KC_DEL,   KC_ENT,   _______ , XXXXXXX, _______
   ),
   [_NUM_FN] = LAYOUT( // 4
@@ -489,9 +489,26 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
 // =>                            ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Process Record ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 uint16_t ck_ent3_timer = 0;
 uint16_t ck_del3_timer = 0;
+uint16_t rsft_timer = 0;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
+    case KC_RSFT: // Double-tap: Toggle Mouse Layer (Symbol)
+      if (record->event.pressed) {
+        if (timer_elapsed(rsft_timer) < TAPPING_TERM) {
+          if (joystickMouse == true){
+            layer_off(_SYMBOL);
+            joystickMouse = false;
+          }else{
+            layer_on(_SYMBOL);
+            joystickMouse = true;
+          }
+          rsft_timer = 0;
+          return false;
+        }
+        rsft_timer = timer_read();
+      }
+      break;
     case CK_LYER: // Tap: Toggle Layer | Hold: Switch Layer
       layerSwitcher_keyHandler(record->event.pressed);
       break;
