@@ -486,6 +486,16 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
   return true;
 }
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case HRW_F:
+    case HRW_J:
+      return QUICK_TAP_TERM;
+    default:
+      return TAPPING_TERM;
+  }
+}
+
 // =>                            ≈ ≈ ≈ ≈ ≈ ░░░▒▒▒▓▓▓ Process Record ▓▓▓▒▒▒░░░ ≈ ≈ ≈ ≈ =╗
 uint16_t ck_ent3_timer = 0;
 uint16_t ck_del3_timer = 0;
@@ -533,7 +543,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         joystickMouse = false;
         layer_off(_SYMBOL);
-        if (timer_elapsed(ck_del3_timer) < TAPPING_TERM) {
+        if (timer_elapsed(ck_del3_timer) < QUICK_TAP_TERM) {
           tap_code(KC_DEL);
       }
     case CK_LNST: // Go to Line Start
